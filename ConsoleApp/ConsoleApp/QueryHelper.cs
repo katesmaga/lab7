@@ -19,6 +19,7 @@ public class QueryHelper : IQueryHelper
     public IEnumerable<Delivery> NotFinished(IEnumerable<Delivery> deliveries) =>
         deliveries.Where(delivery => delivery.Status != DeliveryStatus.Cancelled && delivery.Status != DeliveryStatus.Done);
 
+    
     /// <summary>
     /// Get DeliveriesShortInfo from deliveries of specified client
     /// </summary>
@@ -37,12 +38,16 @@ public class QueryHelper : IQueryHelper
                 Status = delivery.Status,
                 CargoType = delivery.CargoType
             });
-    
+
     /// <summary>
     /// Get first ten Deliveries that starts at specified city and have specified type
     /// </summary>
-    public IEnumerable<Delivery> DeliveriesByCityAndType(IEnumerable<Delivery> deliveries, string cityName, DeliveryType type) => new List<Delivery>();//TODO: Завдання 4
-    
+
+    public IEnumerable<Delivery> DeliveriesByCityAndType(IEnumerable<Delivery> deliveries, string cityName, DeliveryType type) =>
+        deliveries
+            .Where(delivery => delivery.Direction.Origin.City == cityName && delivery.Type == type)        
+            .Take(10);
+
     /// <summary>
     /// Order deliveries by status, then by start of loading period
     /// </summary>
